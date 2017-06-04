@@ -7,3 +7,8 @@ uncurry                 :: (a -> b -> c) -> ((a, b) -> c)
 uncurry f p             =  f (fst p) (snd p)
 
 --- Reference code from http://hackage.haskell.org/package/base-4.9.1.0/docs/src/Data.Tuple.html#curry
+
+-- | 'separate' splits a unary function with an output tuple into separate functions
+separate :: (t -> (a, b)) -> (t -> a, t -> b)
+separate f = (\t -> fst (f t), \t -> snd (f t))
+
