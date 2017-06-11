@@ -1,9 +1,11 @@
-import Data.Typeable
+-
+--- import Control.Category.Cartesian.Closed as CCCC
+
+
 -- $ a^{mn} \rightarrow (a^{m})^{n}$
 -- | 'curry' converts an uncurried function to a curried function.
 curry                   :: ((a, b) -> c) -> a -> b -> c
 curry f x y             =  f (x, y)
-
 
 -- $(a^{m})^{n} \rightarrow a^{mn} $
 -- | 'uncurry' converts a curried function to a function on pairs.
@@ -28,16 +30,35 @@ combine f = (\t -> ((fst f) t, (snd f) t))
                 g = fst f
                 h = snd f
 
--- let k = m|n
---combineInput :: (m -> a, n -> a) -> (k -> a)
-combineInput f = \t -> (fst f) t
-combineInput f = \t -> (snd f) t 
+-- $a^m a^n \rightarrow a^{m+n}$  
+--uncocurry :: ((a -> c), (b -> c)) -> (Either a b) ->( Either a b -> c)
+uncocurry f x = either (fst f) (snd f) x
 
---combineInput2 f = \t -> if typeOf t == typeOf  then else
+-- $a^{m+n} \rightarrow a^m a^n$
+--cocurry :: (Either a b -> c) -> (a -> c, b -> c)
+cocurry f = \x -> (f (Left x), f (Right x))
 
 
-data Foo = Bar | Baz
-func1 Bar = 1
-func2 Baz = 1
+-- Let m = n+k
+-- a^{m}\div a^{n} \rightarrow a^{m-n}
+-- m = Either n k
+-- domainShrink :: ((Either n k) -> a) -> (k -> a)  
+-- domainShrink f x  = f (Right x)  
 
-func = combineInput (func1, func2)
+
+domainShrink :: ((n-> a), (k -> a)) -> (k -> a)  
+domainShrink (f,g) = g
+
+domainGrow f g = (f,g)
+
+
+
+func3 Bar x = func1 x
+func3 Baz x = func2 x
+
+
+snoo = Left "foo" ::Either String Int
+noo = Right 3 :: Either String Int
+
+
+--func = combineInput (func1, func2)
