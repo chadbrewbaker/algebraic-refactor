@@ -1,6 +1,5 @@
--
---- import Control.Category.Cartesian.Closed as CCCC
-
+-- A Haskell implementation of Jr. High Algebra equalties
+-- Motivation is creating paths so you can do type homotopy searches
 
 -- $ a^{mn} \rightarrow (a^{m})^{n}$
 -- | 'curry' converts an uncurried function to a curried function.
@@ -12,11 +11,10 @@ curry f x y             =  f (x, y)
 uncurry                 :: (a -> b -> c) -> ((a, b) -> c)
 uncurry f p             =  f (fst p) (snd p)
 
---- Reference code from http://hackage.haskell.org/package/base-4.9.1.0/docs/src/Data.Tuple.html#curry
+---- curry and uncurry are from http://hackage.haskell.org/package/base-4.9.1.0/docs/src/Data.Tuple.html#curry
 
 
 -- $ (ab)^c \rightarrow a^c b^c$
-
 -- | 'separate' splits a unary function with an output tuple into separate functions
 separate :: (t -> (a, b)) -> (t -> a, t -> b)
 separate f = (\t -> fst (f t), \t -> snd (f t))
@@ -47,18 +45,6 @@ cocurry f = \x -> (f (Left x), f (Right x))
 
 
 domainShrink :: ((n-> a), (k -> a)) -> (k -> a)  
-domainShrink (f,g) = g
-
-domainGrow f g = (f,g)
+domainShrink (f,g) = undefined
 
 
-
-func3 Bar x = func1 x
-func3 Baz x = func2 x
-
-
-snoo = Left "foo" ::Either String Int
-noo = Right 3 :: Either String Int
-
-
---func = combineInput (func1, func2)
